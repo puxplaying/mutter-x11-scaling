@@ -17,8 +17,10 @@ checkdepends=(xorg-server-xvfb)
 groups=(gnome)
 install=mutter.install
 _commit=943b0699968733b88381679095e87ac38a65cb1d  # master
-source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit")
-sha256sums=('SKIP')
+source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
+         x11-Add-support-for-fractional-scaling-using-Randr.patch)
+sha256sums=('SKIP'
+            '6e022df5e5b2bb02ca3dedb5cc2895193297703888213764a2c4a2629d9d2272')
 
 pkgver() {
   cd $pkgname
@@ -27,7 +29,7 @@ pkgver() {
 
 prepare() {
   cd $pkgname
-  patch -p1 -i x11-Add-support-for-fractional-scaling-using-Randr.patch
+  patch -p1 -i "${srcdir}/x11-Add-support-for-fractional-scaling-using-Randr.patch"
 }
 
 build() {
