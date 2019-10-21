@@ -3,7 +3,7 @@
 # Contributor: Michael Kanis <mkanis_at_gmx_dot_de>
 
 pkgname=mutter
-pkgver=3.34.1+12+g943b06999
+pkgver=3.34.1+26+gc0037305e
 pkgrel=1
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
@@ -16,10 +16,12 @@ makedepends=(gobject-introspection git egl-wayland meson xorg-server sysprof)
 checkdepends=(xorg-server-xvfb)
 groups=(gnome)
 install=mutter.install
-_commit=943b0699968733b88381679095e87ac38a65cb1d  # master
+_commit=c0037305ebd9b742f8d133d810192022878efe8e  # gnome-3-34
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-         x11-Add-support-for-fractional-scaling-using-Randr.patch)
+        fix-build.diff
+        x11-Add-support-for-fractional-scaling-using-Randr.patch)
 sha256sums=('SKIP'
+            '28aa24daed161f2566ca2b159beb43285184c533956b851a7eb318de741da935'
             '6e022df5e5b2bb02ca3dedb5cc2895193297703888213764a2c4a2629d9d2272')
 
 pkgver() {
@@ -29,6 +31,10 @@ pkgver() {
 
 prepare() {
   cd $pkgname
+
+  # fix build with libglvnd's EGL headers
+  git apply -3 ../fix-build.diff
+  
   patch -p1 -i "${srcdir}/x11-Add-support-for-fractional-scaling-using-Randr.patch"
 }
 
