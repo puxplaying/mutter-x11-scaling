@@ -1,7 +1,7 @@
 # mutter-x11-scaling
 Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro / Arch Linux.
 
-The binary package from the release page was build on the stable branch.
+The binary package from the release page was build on Manjaro's stable branch.
 
 All Credits belong to [Arch Linux](https://www.archlinux.org/packages/extra/x86_64/mutter/) and [Ubuntu](https://git.launchpad.net/ubuntu/+source/mutter/tree/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch)
 
