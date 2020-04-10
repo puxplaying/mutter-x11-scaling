@@ -1,5 +1,5 @@
 # mutter-x11-scaling
-Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro.
+Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro / Arch Linux.
 
 The binary package from the release page was build on the stable branch.
 
