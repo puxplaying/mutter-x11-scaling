@@ -21,7 +21,7 @@ _commit=52e5d6fc948ecd7d78c3bddf2cff13eb3c386f4c  # tags/3.36.1^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	x11-Add-support-for-fractional-scaling-using-Randr.patch)
 sha256sums=('SKIP'
-            '955ab518aba722d04f03518c158fded7d7ae58c3fcbdc3ad196c0855708d658a')
+            '61c8781ad44a1eb3c96b19671c75c54531cfd9a850e1cac4b7d9bcf141e629c1')
 
 pkgver() {
   cd $pkgname
