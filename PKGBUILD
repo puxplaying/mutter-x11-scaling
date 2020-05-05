@@ -3,8 +3,8 @@
 # Contributor: Michael Kanis <mkanis_at_gmx_dot_de>
 
 pkgname=mutter
-pkgver=3.36.1
-pkgrel=2
+pkgver=3.36.2
+pkgrel=1
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
@@ -17,11 +17,11 @@ checkdepends=(xorg-server-xvfb)
 provides=(libmutter-6.so)
 groups=(gnome)
 install=mutter.install
-_commit=52e5d6fc948ecd7d78c3bddf2cff13eb3c386f4c  # tags/3.36.1^0
+_commit=63bf5f11505f980070eb714a52753a64462c5721  # tags/3.36.2^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	x11-Add-support-for-fractional-scaling-using-Randr.patch)
 sha256sums=('SKIP'
-            '61c8781ad44a1eb3c96b19671c75c54531cfd9a850e1cac4b7d9bcf141e629c1')
+            'a00ff298341dd15319640222a875d0421045b26286a0c272daf77e1bc300a579')
 
 pkgver() {
   cd $pkgname
