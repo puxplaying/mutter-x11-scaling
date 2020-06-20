@@ -19,9 +19,9 @@ groups=(gnome)
 install=mutter.install
 _commit=dc75c7d297fac4b047e4fbaa0186720e9d6b1e38  # tags/3.36.3^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	x11-Add-support-for-fractional-scaling-using-Randr.patch)
+	      "x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
-            '2cef06610f790b1f32f7ed82fe19ead29c72134de9256b6c5957b36fc898aa6e')
+            'f04df237062940a9b58895e720a2feb81a5713ebf13292d8cacd8f04ff70f27d')
 
 pkgver() {
   cd $pkgname
@@ -31,7 +31,7 @@ pkgver() {
 prepare() {
   cd $pkgname
 
-  # Ubuntu Patch for fractional scaling
+  # Ubuntu Patch for X11 fractional scaling
   patch -p1 -i "${srcdir}/x11-Add-support-for-fractional-scaling-using-Randr.patch"
 }
 
