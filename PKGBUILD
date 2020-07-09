@@ -1,9 +1,16 @@
-# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
-# Maintainer: Ionut Biru <ibiru@archlinux.org>
+# Maintainer: pux @ forum.manjaro.org
+
+# Archlinux credits:
+# Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+# Contributor: Ionut Biru <ibiru@archlinux.org>
 # Contributor: Michael Kanis <mkanis_at_gmx_dot_de>
 
-pkgname=mutter
-pkgver=3.36.3
+# Ubuntu credits:
+# Marco Trevisan https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch
+
+pkgbase=mutter
+pkgname=$pkgbase-x11-scaling
+pkgver=3.36.4
 pkgrel=1
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
@@ -14,22 +21,23 @@ depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas libcanber
          gnome-settings-daemon libgudev libinput pipewire xorg-server-xwayland)
 makedepends=(gobject-introspection git egl-wayland meson xorg-server sysprof)
 checkdepends=(xorg-server-xvfb)
-provides=(libmutter-6.so)
+conflicts=($pkgbase)
+provides=(libmutter-6.so $pkgbase)
 groups=(gnome)
 install=mutter.install
-_commit=dc75c7d297fac4b047e4fbaa0186720e9d6b1e38  # tags/3.36.3^0
+_commit=d03deb006c4154232ee257a8a16fee4ea61f3286  # tags/3.36.4^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	      "x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
+	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
             'f04df237062940a9b58895e720a2feb81a5713ebf13292d8cacd8f04ff70f27d')
 
 pkgver() {
-  cd $pkgname
+  cd $pkgbase
   git describe --tags | sed 's/-/+/g'
 }
 
 prepare() {
-  cd $pkgname
+  cd $pkgbase
 
   # Ubuntu Patch for X11 fractional scaling
   patch -p1 -i "${srcdir}/x11-Add-support-for-fractional-scaling-using-Randr.patch"
@@ -38,7 +46,7 @@ prepare() {
 build() {
   CFLAGS="${CFLAGS/-O2/-O3} -fno-semantic-interposition"
   LDFLAGS+=" -Wl,-Bsymbolic-functions"
-  arch-meson $pkgname build \
+  arch-meson $pkgbase build \
     -D egl_device=true \
     -D wayland_eglstream=true \
     -D xwayland_initfd=disabled \
