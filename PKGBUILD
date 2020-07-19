@@ -29,7 +29,7 @@ _commit=d03deb006c4154232ee257a8a16fee4ea61f3286  # tags/3.36.4^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
-            'f04df237062940a9b58895e720a2feb81a5713ebf13292d8cacd8f04ff70f27d')
+            '76ae61f3e476dba5f2fbf2968dae05e1ab7ae586cec4e6fe1cfaef6ad394ef8e')
 
 pkgver() {
   cd $pkgbase
