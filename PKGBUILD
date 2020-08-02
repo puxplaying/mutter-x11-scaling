@@ -10,8 +10,8 @@
 
 pkgbase=mutter
 pkgname=$pkgbase-x11-scaling
-pkgver=3.36.4
-pkgrel=2
+pkgver=3.36.4.1
+pkgrel=1
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
