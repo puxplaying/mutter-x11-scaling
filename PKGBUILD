@@ -1,4 +1,4 @@
-# Maintainer: pux @ forum.manjaro.org
+# Maintainer: puxplaying
 
 # Archlinux credits:
 # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
@@ -11,7 +11,7 @@
 pkgbase=mutter
 pkgname=$pkgbase-x11-scaling
 pkgver=3.36.4
-pkgrel=1
+pkgrel=2
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
@@ -29,7 +29,7 @@ _commit=d03deb006c4154232ee257a8a16fee4ea61f3286  # tags/3.36.4^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
-            '76ae61f3e476dba5f2fbf2968dae05e1ab7ae586cec4e6fe1cfaef6ad394ef8e')
+            '6c0f819f02df71c80fc9f240ab9304fadf6fd6709300706fe145e856b3fdf1cb')
 
 pkgver() {
   cd $pkgbase
