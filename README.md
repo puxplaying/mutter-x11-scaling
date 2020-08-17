@@ -11,7 +11,7 @@ To disable fractional scaling run:
 - ```gsettings reset org.gnome.mutter experimental-features```
 ---
 
-Build instructions for Manjaro Linux:
+Build instructions for Arch / Manjaro Linux:
 ```
 sudo pacman -Syu base-devel git
 git clone https://github.com/puxplaying/mutter-x11-scaling.git
