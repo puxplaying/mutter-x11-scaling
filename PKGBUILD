@@ -1,4 +1,5 @@
-# Maintainer: puxplaying
+# Maintainer: puxplaying (Georg Wagner) <puxplaying@gmail.com>
+# Contributor: @xabbu <https://github.com/xabbu>
 
 # Archlinux credits:
 # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
@@ -6,11 +7,11 @@
 # Contributor: Michael Kanis <mkanis_at_gmx_dot_de>
 
 # Ubuntu credits:
-# Marco Trevisan https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch
+# Marco Trevisan <https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch>
 
 pkgbase=mutter
 pkgname=$pkgbase-x11-scaling
-pkgver=3.36.4
+pkgver=3.36.5
 pkgrel=1
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
@@ -25,7 +26,7 @@ conflicts=($pkgbase)
 provides=(libmutter-6.so $pkgbase)
 groups=(gnome)
 install=mutter.install
-_commit=d03deb006c4154232ee257a8a16fee4ea61f3286  # tags/3.36.4^0
+_commit=7d061a06dec02278bef1054e502cae8837c39f2f  # tags/3.36.5^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
