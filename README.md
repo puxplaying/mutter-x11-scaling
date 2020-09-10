@@ -1,9 +1,3 @@
-**Notice** - *Due to GCC update a rebuild of [sysprof](https://www.archlinux.org/packages/extra/x86_64/sysprof/) is needed if you get an LTO error like this:*
-
-```lto1: internal compiler error: bytecode stream: expected tag identifier_node instead of LTO_UNKNOWN```
-
-See also: https://bugs.archlinux.org/task/67686
-
 # mutter-x11-scaling
 Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro / Arch Linux.
 
@@ -17,7 +11,7 @@ To disable fractional scaling run:
 - ```gsettings reset org.gnome.mutter experimental-features```
 ---
 
-Build instructions for Arch / Manjaro Linux:
+Build instructions for Manjaro / Arch Linux:
 ```
 sudo pacman -Syu base-devel git
 git clone https://github.com/puxplaying/mutter-x11-scaling.git
