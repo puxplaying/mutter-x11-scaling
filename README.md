@@ -11,7 +11,7 @@ To disable fractional scaling run:
 - ```gsettings reset org.gnome.mutter experimental-features```
 
 
-Or build the patched [gnome-control-center-x11-scaling](https://github.com/puxplaying/gnome-control-center-x11-scaling) package for proper multi-display management and the toggle option from Ubuntu.
+Or build the patched [gnome-control-center-x11-scaling](https://github.com/puxplaying/gnome-control-center-x11-scaling) package for proper multi-monitor management and the toggle option from Ubuntu.
 
 ---
 
