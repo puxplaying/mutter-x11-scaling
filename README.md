@@ -24,4 +24,4 @@ makepkg -srci
 ```
 ---
 
-![alt text](https://github.com/puxplaying/mutter-x11-scaling/blob/3.38.2/123.png)
+![alt text](https://github.com/puxplaying/mutter-x11-scaling/blob/master/123.png)
