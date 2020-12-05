@@ -7,31 +7,33 @@
 # Contributor: Michael Kanis <mkanis_at_gmx_dot_de>
 
 # Ubuntu credits:
-# Marco Trevisan <https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch>
+# Marco Trevisan: <https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch>
 
 pkgbase=mutter
 pkgname=$pkgbase-x11-scaling
-pkgver=3.38.1
+pkgver=3.38.2
 pkgrel=1
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
 license=(GPL)
-depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas libcanberra
-         startup-notification zenity libsm gnome-desktop upower libxkbcommon-x11
-         gnome-settings-daemon libgudev libinput pipewire xorg-server-xwayland)
+depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
+         libcanberra startup-notification zenity libsm gnome-desktop upower
+         libxkbcommon-x11 gnome-settings-daemon libgudev libinput pipewire
+         xorg-server-xwayland graphene)
 makedepends=(gobject-introspection git egl-wayland meson xorg-server sysprof)
 checkdepends=(xorg-server-xvfb)
 conflicts=($pkgbase)
 provides=(libmutter-7.so $pkgbase)
 groups=(gnome)
 install=mutter.install
-_commit=113446f2e9ce1d4c1ec6754512b0d0f7c9ba0955  # tags/3.38.1^0
-_scaling_commit=df8bc7b19b6ae94fa28f4bf024ff21ff18abee00 # Commit df8bc7b1
+_commit=9b9051c2172078e623e8a4b0e45e38004c394a92  # tags/3.38.2^0
+_scaling_commit=06f9de6913fdeb2784b423c71c53d4974b1d4c80 # Commit 06f9de69
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
+	#"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch"
+	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://raw.githubusercontent.com/puxplaying/mutter-x11-scaling/3.38.2/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
-            'c654e84cc1d776fe1b86adbd0db92ce04e5770e4a3a616f24b79cf9c5729d493')
+            '302c47f65b9e0cb4245d0a2ab6eb2f2ec8fd481282dc8f1b25c3fe25db18fcbd')
 
 pkgver() {
   cd $pkgbase
