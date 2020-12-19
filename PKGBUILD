@@ -12,7 +12,7 @@
 pkgbase=mutter
 pkgname=$pkgbase-x11-scaling
 pkgver=3.38.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
@@ -28,12 +28,11 @@ provides=(libmutter-7.so $pkgbase)
 groups=(gnome)
 install=mutter.install
 _commit=9b9051c2172078e623e8a4b0e45e38004c394a92  # tags/3.38.2^0
-_scaling_commit=06f9de6913fdeb2784b423c71c53d4974b1d4c80 # Commit 06f9de69
+_scaling_commit=31fac1abdef96d8e4b468e11771693ec5f7acd7b # Commit 31fac1ab
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	#"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch"
-	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://raw.githubusercontent.com/puxplaying/mutter-x11-scaling/3.38.2/x11-Add-support-for-fractional-scaling-using-Randr.patch")
+		"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
-            '302c47f65b9e0cb4245d0a2ab6eb2f2ec8fd481282dc8f1b25c3fe25db18fcbd')
+            '3380ae1d479666679735a94c05c7e3ac10b3da2d2b843dd881d351bb5c56bf96')
 
 pkgver() {
   cd $pkgbase
