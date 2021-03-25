@@ -12,7 +12,7 @@
 pkgbase=mutter
 pkgname=$pkgbase-x11-scaling
 pkgver=3.38.4
-pkgrel=1
+pkgrel=2
 pkgdesc="A window manager for GNOME"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
@@ -21,14 +21,14 @@ depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
          libcanberra startup-notification zenity libsm gnome-desktop upower
          libxkbcommon-x11 gnome-settings-daemon libgudev libinput pipewire
          xorg-xwayland graphene)
-makedepends=(gobject-introspection git egl-wayland meson xorg-server sysprof)
+makedepends=(gobject-introspection git egl-wayland meson xorg-server)
 checkdepends=(xorg-server-xvfb)
 conflicts=($pkgbase)
 provides=(libmutter-7.so $pkgbase)
 groups=(gnome)
 install=mutter.install
 _commit=ffd8b25c986bce4d7707bee099a72f3cf54d93e2  # tags/3.38.4^0
-_scaling_commit=077f4d377638aedff11aabfc9eb7095c3694398a # Commit 31fac1ab
+_scaling_commit=077f4d377638aedff11aabfc9eb7095c3694398a # Commit 077f4d37
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
@@ -52,7 +52,8 @@ build() {
   arch-meson $pkgbase build \
     -D egl_device=true \
     -D wayland_eglstream=true \
-    -D installed_tests=false
+    -D installed_tests=false \
+    -D profiler=false
   meson compile -C build
 }
 
