@@ -1,3 +1,5 @@
+# OUT OF DATE - see also the discussion [here](https://github.com/puxplaying/mutter-x11-scaling/discussions/15)
+
 # mutter-x11-scaling
 Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro / Arch Linux.
 
