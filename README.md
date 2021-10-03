@@ -26,4 +26,4 @@ makepkg -srci
 ```
 ---
 
-![1](https://user-images.githubusercontent.com/28549766/135752900-da88d254-7350-4fce-88f3-9a5dce77a2d4.png)
+![1](https://user-images.githubusercontent.com/28549766/135753045-1296531d-8d06-45f3-af10-f8b8cdbee720.png)
