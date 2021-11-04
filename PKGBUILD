@@ -13,9 +13,9 @@
 
 pkgbase=mutter
 pkgname=$pkgbase-x11-scaling
-pkgver=40.4
+pkgver=41.0
 pkgrel=1
-pkgdesc="A window manager for GNOME with patch for X11 fractional scaling"
+pkgdesc="A window manager for GNOME with X11 fractional scaling patch"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
 license=(GPL)
@@ -23,18 +23,19 @@ depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
          libcanberra startup-notification zenity libsm gnome-desktop upower
          libxkbcommon-x11 gnome-settings-daemon libgudev libinput pipewire
          xorg-xwayland graphene libxkbfile)
-makedepends=(gobject-introspection git egl-wayland meson xorg-server)
-checkdepends=(xorg-server-xvfb pipewire-media-session)
+makedepends=(gobject-introspection git egl-wayland meson xorg-server
+             wayland-protocols)
+checkdepends=(xorg-server-xvfb pipewire-media-session python-dbusmock)
 conflicts=($pkgbase)
-provides=(libmutter-8.so $pkgbase)
+provides=(libmutter-9.so $pkgbase)
 groups=(gnome)
-install=mutter.install
-_commit=2bfef7dbdc6f432a5433c93c1fcdbf00099367c8  # tags/40.4^0
-_scaling_commit=91d9bdafd5d624fe1f40f4be48663014830eee78 # Commit 91d9bdaf
+_commit=f5daf0f1b93fedd7fce5ac34c77162dfba3ba7c3  # tags/41.0^0
+#_scaling_commit=91d9bdafd5d624fe1f40f4be48663014830eee78 # Commit 91d9bdaf
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch")
+	#"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch"
+	"x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
-            '19de314590e3311563b11da3305d8e9c8ba1f859fe65db668ccd0457250a9ca5')
+            '34463f4b17921fae3e75d7e1d862e4c170209eff35b2fc9fad376b8e14f3efb6')
 
 pkgver() {
   cd $pkgbase
@@ -76,8 +77,7 @@ _check() (
 )
 
 check() {
-  dbus-run-session xvfb-run \
-    -s '-screen 0 1920x1080x24 -nolisten local +iglx -noreset' \
+  dbus-run-session xvfb-run -s '-nolisten local' \
     bash -c "$(declare -f _check); _check"
 }
 
