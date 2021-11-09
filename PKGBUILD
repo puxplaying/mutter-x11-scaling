@@ -11,9 +11,9 @@
 # Ubuntu credits:
 # Marco Trevisan: <https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch>
 
-pkgbase=mutter
-pkgname=$pkgbase-x11-scaling
-pkgver=41.0
+pkgname=mutter-x11-scaling
+_pkgname=mutter
+pkgver=41.1
 pkgrel=1
 pkgdesc="A window manager for GNOME with X11 fractional scaling patch"
 url="https://gitlab.gnome.org/GNOME/mutter"
@@ -26,33 +26,34 @@ depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
 makedepends=(gobject-introspection git egl-wayland meson xorg-server
              wayland-protocols)
 checkdepends=(xorg-server-xvfb pipewire-media-session python-dbusmock)
-conflicts=($pkgbase)
-provides=(libmutter-9.so $pkgbase)
-groups=(gnome)
-_commit=f5daf0f1b93fedd7fce5ac34c77162dfba3ba7c3  # tags/41.0^0
-#_scaling_commit=91d9bdafd5d624fe1f40f4be48663014830eee78 # Commit 91d9bdaf
+provides=($_pkgname libmutter-9.so)
+conflicts=($_pkgname $_pkgname-x11-sc)
+replaces=($_pkgname-x11-sc)
+_commit=8de96d3d7c40e6b5289fd707fdd5e6d604f33e8f  # tags/41.1^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	#"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch"
+	"Revert-mutter-commit-ef0f7084.patch"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
+            '0450d2fabbba731178ba08cb4f99725d8993b1715ed95e3a8fceec3f1e08bdd8'
             '34463f4b17921fae3e75d7e1d862e4c170209eff35b2fc9fad376b8e14f3efb6')
 
 pkgver() {
-  cd $pkgbase
+  cd $_pkgname
   git describe --tags | sed 's/-/+/g'
 }
 
 prepare() {
-  cd $pkgbase
+  cd $_pkgname
   
   # Ubuntu Patch for X11 fractional scaling
+  patch -p1 -i "${srcdir}/Revert-mutter-commit-ef0f7084.patch"
   patch -p1 -i "${srcdir}/x11-Add-support-for-fractional-scaling-using-Randr.patch"
 }
 
 build() {
   CFLAGS="${CFLAGS/-O2/-O3} -fno-semantic-interposition"
   LDFLAGS+=" -Wl,-Bsymbolic-functions"
-  arch-meson $pkgbase build \
+  arch-meson $_pkgname build \
     -D egl_device=true \
     -D wayland_eglstream=true \
     -D installed_tests=false \
