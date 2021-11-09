@@ -1,0 +1,56 @@
+From a199f5489e98ce9178fcb5e9f82cd351c1cf5253 Mon Sep 17 00:00:00 2001
+From: puxplaying <puxplaying@gmail.com>
+Date: Fri, 5 Nov 2021 16:52:02 +0100
+Subject: [PATCH] Revert mutter commit ef0f7084
+
+---
+ src/backends/meta-monitor-manager-private.h |  2 ++
+ src/backends/meta-monitor-manager.c         | 12 ++++++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/src/backends/meta-monitor-manager-private.h b/src/backends/meta-monitor-manager-private.h
+index 3282b373a..560c1f1a1 100644
+--- a/src/backends/meta-monitor-manager-private.h
++++ b/src/backends/meta-monitor-manager-private.h
+@@ -147,6 +147,8 @@ struct _MetaMonitorManager
+   MetaMonitorConfigManager *config_manager;
+ 
+   GnomePnpIds *pnp_ids;
++  
++  gulong experimental_features_changed_handler_id;
+ 
+   MetaMonitorSwitchConfigType current_switch_config;
+ };
+diff --git a/src/backends/meta-monitor-manager.c b/src/backends/meta-monitor-manager.c
+index 4cf4d90c5..7f2470314 100644
+--- a/src/backends/meta-monitor-manager.c
++++ b/src/backends/meta-monitor-manager.c
+@@ -1055,10 +1055,11 @@ meta_monitor_manager_constructed (GObject *object)
+ 
+   manager->display_config = meta_dbus_display_config_skeleton_new ();
+ 
+-  g_signal_connect_object (settings,
+-                           "experimental-features-changed",
+-                           G_CALLBACK (experimental_features_changed),
+-                           manager, 0);
++  manager->experimental_features_changed_handler_id =
++    g_signal_connect (settings,
++                      "experimental-features-changed",
++                      G_CALLBACK (experimental_features_changed),
++                      manager);
+ 
+   monitor_manager_setup_dbus_config_handlers (manager);
+ 
+@@ -1100,6 +1101,9 @@ meta_monitor_manager_finalize (GObject *object)
+   g_list_free_full (manager->logical_monitors, g_object_unref);
+ 
+   g_warn_if_fail (!priv->virtual_monitors);
++  
++  g_clear_signal_handler (&manager->experimental_features_changed_handler_id,
++                          manager->backend);
+ 
+   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->finalize (object);
+ }
+-- 
+2.33.1
+
