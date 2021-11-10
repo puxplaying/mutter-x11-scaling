@@ -1,9 +1,9 @@
 # mutter-x11-scaling
-Mutter build with Ubuntu patches for Xorg fractional scaling on Manjaro / Arch Linux.
+Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro / Arch Linux.
 
 All Credits belong to [Arch Linux](https://www.archlinux.org/packages/extra/x86_64/mutter/) and [Ubuntu](https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch)
 
-On [Manjaro](https://manjaro.org/) ```mutter-x11-scaling``` and ```gnome-control-center-x11-scaling``` packages can be installed from the repository.
+On [Manjaro](https://manjaro.org/) - ```mutter-x11-scaling``` and ```gnome-control-center-x11-scaling``` packages can be installed from the repository.
 
 ---
 To enable fractional scaling after installation run:
@@ -18,6 +18,8 @@ Or build the patched [gnome-control-center-x11-scaling](https://github.com/puxpl
 ---
 
 Build instructions for Manjaro / Arch Linux:
+
+Note: It is recommended to build the package in a [clean chroot](https://wiki.archlinux.org/title/DeveloperWiki:Building_in_a_clean_chroot) to avoid timeout errors in the check() function during compilation.
 ```
 sudo pacman -Syu base-devel git
 git clone https://github.com/puxplaying/mutter-x11-scaling.git
@@ -26,4 +28,4 @@ makepkg -srci
 ```
 ---
 
-![alt text](https://github.com/puxplaying/mutter-x11-scaling/blob/master/123.png)
+![1](https://user-images.githubusercontent.com/28549766/135753045-1296531d-8d06-45f3-af10-f8b8cdbee720.png)
