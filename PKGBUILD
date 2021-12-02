@@ -13,7 +13,7 @@
 
 pkgname=mutter-x11-scaling
 _pkgname=mutter
-pkgver=41.1
+pkgver=41.1+r20+ge3931f7b8
 pkgrel=1
 pkgdesc="A window manager for GNOME with X11 fractional scaling patch"
 url="https://gitlab.gnome.org/GNOME/mutter"
@@ -27,9 +27,9 @@ makedepends=(gobject-introspection git egl-wayland meson xorg-server
              wayland-protocols)
 checkdepends=(xorg-server-xvfb pipewire-media-session python-dbusmock)
 provides=($_pkgname libmutter-9.so)
-conflicts=($_pkgname $_pkgname-x11-sc)
-replaces=($_pkgname-x11-sc)
-_commit=8de96d3d7c40e6b5289fd707fdd5e6d604f33e8f  # tags/41.1^0
+groups=(gnome)
+conflicts=($_pkgname)
+_commit=e3931f7b8cbd44072137c5dc9de9041486daeade  # gnome-41
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	"Revert-mutter-commit-ef0f7084.patch"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch")
@@ -39,7 +39,7 @@ sha256sums=('SKIP'
 
 pkgver() {
   cd $_pkgname
-  git describe --tags | sed 's/-/+/g'
+  git describe --tags | sed 's/[^-]*-g/r&/;s/-/+/g'
 }
 
 prepare() {
