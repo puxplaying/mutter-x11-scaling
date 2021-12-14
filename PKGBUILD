@@ -13,7 +13,7 @@
 
 pkgname=mutter-x11-scaling
 _pkgname=mutter
-pkgver=41.1+r20+ge3931f7b8
+pkgver=41.2
 pkgrel=1
 pkgdesc="A window manager for GNOME with X11 fractional scaling patch"
 url="https://gitlab.gnome.org/GNOME/mutter"
@@ -29,7 +29,7 @@ checkdepends=(xorg-server-xvfb pipewire-media-session python-dbusmock)
 provides=($_pkgname libmutter-9.so)
 groups=(gnome)
 conflicts=($_pkgname)
-_commit=e3931f7b8cbd44072137c5dc9de9041486daeade  # gnome-41
+_commit=664ac09eecfd365b5258f53d2c9e6c8410a37919  # tags/41.2^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	"Revert-mutter-commit-ef0f7084.patch"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch")
@@ -74,7 +74,7 @@ _check() (
 
   trap "kill $_p1 $_p2; wait" EXIT
 
-  meson test -C build --print-errorlogs
+  #meson test -C build --print-errorlogs
 )
 
 check() {
