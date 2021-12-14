@@ -19,7 +19,6 @@ Or build the patched [gnome-control-center-x11-scaling](https://github.com/puxpl
 
 Build instructions for Manjaro / Arch Linux:
 
-Note: It is recommended to build the package in a [clean chroot](https://wiki.archlinux.org/title/DeveloperWiki:Building_in_a_clean_chroot) to avoid timeout errors in the check() function during compilation.
 ```
 sudo pacman -Syu base-devel git
 git clone https://github.com/puxplaying/mutter-x11-scaling.git
