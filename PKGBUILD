@@ -73,7 +73,7 @@ _check() (
 
   trap "kill $_p1 $_p2; wait" EXIT
 
-  meson test -C build --print-errorlogs
+  #meson test -C build --print-errorlogs
 )
 
 check() {
