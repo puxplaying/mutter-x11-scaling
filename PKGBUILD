@@ -13,30 +13,28 @@
 
 pkgname=mutter-x11-scaling
 _pkgname=mutter
-pkgver=41.5
-pkgrel=1
+pkgver=42.0
+pkgrel=2
 pkgdesc="A window manager for GNOME with X11 fractional scaling patch"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
 license=(GPL)
 depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
-         libcanberra startup-notification zenity libsm gnome-desktop upower
+         libcanberra startup-notification zenity libsm gnome-desktop 
          libxkbcommon-x11 gnome-settings-daemon libgudev libinput pipewire
          xorg-xwayland graphene libxkbfile libsysprof-capture)
 makedepends=(gobject-introspection git egl-wayland meson xorg-server
-             wayland-protocols sysprof)
-checkdepends=(xorg-server-xvfb pipewire-media-session python-dbusmock)
-provides=($_pkgname libmutter-9.so)
-groups=(gnome)
+             wayland-protocols sysprof gi-docgen)
+checkdepends=(xorg-server-xvfb wireplumber python-dbusmock)
 conflicts=($_pkgname)
 options=(debug)
-_commit=17926e941d67867911c462737f4d013adb55e4d6  # tags/41.5^0
+_commit=9249aba72a5c4454894c08735a4963ca1665e34d  # tags/42.0^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
 	"Revert-mutter-commit-ef0f7084.patch"
 	"x11-Add-support-for-fractional-scaling-using-Randr.patch")
 sha256sums=('SKIP'
             '0450d2fabbba731178ba08cb4f99725d8993b1715ed95e3a8fceec3f1e08bdd8'
-            '34463f4b17921fae3e75d7e1d862e4c170209eff35b2fc9fad376b8e14f3efb6')
+            '1678c3375d8877b3686c7dd3fd1356bf949a9ab5b40ee070b239be3ef1db2f82')
 
 pkgver() {
   cd $_pkgname
@@ -46,8 +44,14 @@ pkgver() {
 prepare() {
   cd $_pkgname
 
+  # Fix Dash-to-dock not autohiding
+  git cherry-pick -n 2aad56b949b8 0280b0aaa563
+
+  # https://bugs.archlinux.org/task/74360
+  git cherry-pick -n f9857cb8bd7af20e819283917ae165fa40c19f07
+
   # Ubuntu Patch for X11 fractional scaling
-  patch -p1 -i "${srcdir}/Revert-mutter-commit-ef0f7084.patch"
+  # patch -p1 -i "${srcdir}/Revert-mutter-commit-ef0f7084.patch"
   patch -p1 -i "${srcdir}/x11-Add-support-for-fractional-scaling-using-Randr.patch"
 
   # Make tests run
@@ -86,5 +90,8 @@ check() {
 }
 
 package() {
+  provides=($_pkgname libmutter-10.so)
+  groups=(gnome)
+
   meson install -C build --destdir "$pkgdir"
 }
