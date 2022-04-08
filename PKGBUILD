@@ -11,10 +11,9 @@
 # Ubuntu credits:
 # Marco Trevisan: <https://salsa.debian.org/gnome-team/mutter/-/blob/ubuntu/master/debian/patches/x11-Add-support-for-fractional-scaling-using-Randr.patch>
 
-pkgbase=mutter
-pkgname=(mutter-x11-scaling mutter-x11-scaling-docs)
+pkgname=mutter-x11-scaling
 pkgver=42.0
-pkgrel=2
+pkgrel=3
 pkgdesc="A window manager for GNOME with X11 fractional scaling patch"
 url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
@@ -27,7 +26,8 @@ makedepends=(gobject-introspection git egl-wayland meson xorg-server
              wayland-protocols sysprof gi-docgen)
 checkdepends=(xorg-server-xvfb wireplumber python-dbusmock)
 options=(debug)
-conflicts=($pkgbase)
+provides=(mutter libmutter-10.so)
+conflicts=(mutter)
 _scaling_commit=784834cceb2bf0284d6b267ddc8f3d0d9ded7304 # Commit 784834cc
 _commit=9249aba72a5c4454894c08735a4963ca1665e34d  # tags/42.0^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
@@ -63,7 +63,6 @@ build() {
   arch-meson mutter build \
     -D egl_device=true \
     -D wayland_eglstream=true \
-    -D docs=true \
     -D installed_tests=false
   meson compile -C build
 }
@@ -99,18 +98,6 @@ _pick() {
   done
 }
 
-package_mutter-x11-scaling() {
-  provides=($pkgbase libmutter-10.so)
-  groups=(gnome)
-
+package() {
   meson install -C build --destdir "$pkgdir"
-
-  _pick docs "$pkgdir"/usr/share/mutter-*/doc
-}
-
-package_mutter-x11-scaling-docs() {
-  pkgdesc+=" (documentation)"
-  depends=()
-
-  mv docs/* "$pkgdir"
 }
