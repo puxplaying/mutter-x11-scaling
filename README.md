@@ -12,8 +12,6 @@ To enable fractional scaling after installation run:
 To disable fractional scaling run:
 - ```gsettings reset org.gnome.mutter experimental-features```
 
-Or build the patched [gnome-control-center-x11-scaling](https://github.com/puxplaying/gnome-control-center-x11-scaling) package for proper multi-monitor management and the toggle option from Ubuntu.
-
 ---
 
 Build instructions for Manjaro / Arch Linux:
