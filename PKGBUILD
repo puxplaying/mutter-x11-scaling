@@ -31,8 +31,8 @@ conflicts=(mutter)
 _scaling_commit=fd7ba96ccf650634fec883e37f7b07557434a785 # Commit fd7ba96c
 _commit=bdf3470a8a89206a39dc45824a8080dc6a9666ca  # tags/43.0^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	"https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/ubuntu/x11-Add-support-for-fractional-scaling-using-Randr.patch"
-	"Support-Dynamic-triple-double-buffering.patch")
+	"x11-Add-support-for-fractional-scaling-using-Randr.patch::https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/ubuntu/x11-Add-support-for-fractional-scaling-using-Randr.patch"
+	"Support-Dynamic-triple-double-buffering.patch::https://raw.githubusercontent.com/puxplaying/mutter-x11-scaling/abc3b7c285779a719c5b9a99b477657a8021727e/Support-Dynamic-triple-double-buffering.patch")
 sha256sums=('SKIP'
             '66f912f30e14e51c83f087166b4a41a5a8bba94cb57c39bf182df4d5af7e7b2c'
             '169e123d57045ac719c2115249ab76f4e34d77066647c1756f6c276ad5227a59')
