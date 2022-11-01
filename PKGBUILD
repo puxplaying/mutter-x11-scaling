@@ -2,6 +2,7 @@
 # Contributor: @xabbu <https://github.com/xabbu>
 # Contributor: Stefano Capitani <stefano_at_manjaro_dot_org>
 # Contributor: Mark Wagie <mark_at_manjaro_dot_org>
+# Contributor: realqhc <https://github.com/realqhc>
 
 # Archlinux credits:
 # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
@@ -19,20 +20,21 @@ url="https://gitlab.gnome.org/GNOME/mutter"
 arch=(x86_64)
 license=(GPL)
 depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
-         libcanberra startup-notification zenity libsm gnome-desktop 
-         libxkbcommon-x11 gnome-settings-daemon libgudev libinput pipewire
-         xorg-xwayland graphene libxkbfile libsysprof-capture)
+         libcanberra startup-notification libsm gnome-desktop libxkbcommon-x11
+         gnome-settings-daemon libgudev libinput pipewire xorg-xwayland graphene
+         libxkbfile libsysprof-capture lcms2 colord)
 makedepends=(gobject-introspection git egl-wayland meson xorg-server
              wayland-protocols sysprof gi-docgen)
-checkdepends=(xorg-server-xvfb wireplumber python-dbusmock)
+checkdepends=(xorg-server-xvfb wireplumber python-dbusmock zenity)
 provides=(mutter libmutter-11.so)
 conflicts=(mutter)
+_scaling_commit=fd7ba96ccf650634fec883e37f7b07557434a785 # Commit fd7ba96c
 _commit=bdf3470a8a89206a39dc45824a8080dc6a9666ca  # tags/43.0^0
 source=("git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-	"x11-Add-support-for-fractional-scaling-using-Randr.patch"
+	"https://salsa.debian.org/gnome-team/mutter/-/raw/$_scaling_commit/debian/patches/ubuntu/x11-Add-support-for-fractional-scaling-using-Randr.patch"
 	"Support-Dynamic-triple-double-buffering.patch")
 sha256sums=('SKIP'
-            '574ae2035e2df2bc5fc8571042a8cefb60f7cdd92d497bb3ce183f5add3051b2'
+            '66f912f30e14e51c83f087166b4a41a5a8bba94cb57c39bf182df4d5af7e7b2c'
             '169e123d57045ac719c2115249ab76f4e34d77066647c1756f6c276ad5227a59')
 
 pkgver() {
