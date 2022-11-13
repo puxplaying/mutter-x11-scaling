@@ -24,4 +24,12 @@ makepkg -srci
 ```
 ---
 
+**Note:**
+
+With *GNOME 43* the [gnome-control-center-x11-scaling](https://github.com/puxplaying/gnome-control-center-x11-scaling) package is back, 
+which includes patches for proper multi-monitor scaling and a toggle to 
+enable/disable fractional scaling.
+
+---
+
 ![1](https://user-images.githubusercontent.com/28549766/170991844-d06a1f0c-8b2c-4af6-b092-55acb090e284.png)
