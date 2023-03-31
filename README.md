@@ -1,7 +1,3 @@
-Poll to keep or remove dynamic triple/double buffering: https://github.com/puxplaying/mutter-x11-scaling/discussions/36
-
----
-
 # mutter-x11-scaling
 Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro / Arch Linux.
 
