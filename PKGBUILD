@@ -66,7 +66,7 @@ conflicts=(mutter)
 _commit=4f6c91847088d7d6476b88575b3a6601b819b443  # tags/45.0^0
 source=(
   "git+https://gitlab.gnome.org/GNOME/mutter.git#commit=$_commit"
-  "mutter-45.0-x11-Add-support-for-fractional-scaling-using-Randr.patch"
+  "https://raw.githubusercontent.com/puxplaying/mutter-x11-scaling/mutter-45/mutter-45.0-x11-Add-support-for-fractional-scaling-using-Randr.patch"
 )
 b2sums=('SKIP'
         'c25a4c909aa9a07d3c0a131a8419d510583ecdd883950c82ff487b0f578a13b2cb093c54b966cb48509c77ffdcc93cbadcd67318173454fb8cb424f01fd0bcb5')
@@ -109,7 +109,7 @@ check() (
 
   xvfb-run -s '-nolisten local +iglx -noreset' \
     mutter/src/tests/meta-dbus-runner.py --launch=pipewire --launch=wireplumber \
-    #meson test -C build --print-errorlogs -t 5 --setup plain || :
+    meson test -C build --print-errorlogs -t 5 --setup plain || :
 )
 
 package() {
