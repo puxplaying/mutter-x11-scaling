@@ -31,3 +31,9 @@ enable/disable fractional scaling.
 ---
 
 ![1](https://user-images.githubusercontent.com/28549766/170991844-d06a1f0c-8b2c-4af6-b092-55acb090e284.png)
+
+---
+
+**Note:**
+
+All of my projects which contain a PKGBUILD in the repository, can be automatically kept up to date with [Autogit](https://github.com/puxplaying/autogit).
