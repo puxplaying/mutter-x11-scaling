@@ -6,6 +6,7 @@ All credits belong to [Arch Linux](https://www.archlinux.org/packages/extra/x86_
 ---
 To enable fractional scaling after installation run:
 - ```gsettings set org.gnome.mutter experimental-features "['x11-randr-fractional-scaling']"```
+- Then open Settings > Displays to set the scale.
 
 To disable fractional scaling run:
 - ```gsettings reset org.gnome.mutter experimental-features```
@@ -24,16 +25,6 @@ makepkg -srci
 
 **Note:**
 
-With *GNOME 43* the [gnome-control-center-x11-scaling](https://github.com/puxplaying/gnome-control-center-x11-scaling) package is back, 
-which includes patches for proper multi-monitor scaling and a toggle to 
-enable/disable fractional scaling.
+For proper multi-monitor fractional scaling, install also the [gnome-control-center-x11-scaling](https://github.com/puxplaying/gnome-control-center-x11-scaling) package.
 
 ---
-
-![1](https://user-images.githubusercontent.com/28549766/170991844-d06a1f0c-8b2c-4af6-b092-55acb090e284.png)
-
----
-
-**Note:**
-
-All of my projects which contain a PKGBUILD in the repository, can be automatically kept up to date with [Autogit](https://github.com/puxplaying/autogit).
