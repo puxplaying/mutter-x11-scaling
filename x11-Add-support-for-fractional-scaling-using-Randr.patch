@@ -38,7 +38,7 @@ Forwarded: No, forwarding is not planned as there's no upstream interest
  create mode 100644 data/org.gnome.mutter.x11.gschema.xml.in
 
 diff --git a/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml b/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml
-index 2fe8450..1098673 100644
+index b05337d..11b4ea4 100644
 --- a/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml
 +++ b/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml
 @@ -419,6 +419,11 @@
@@ -54,11 +54,11 @@ index 2fe8450..1098673 100644
  					       changed. Absence of this means the
  					       layout mode cannot be changed.
 diff --git a/data/meson.build b/data/meson.build
-index e97df81..ab13782 100644
+index 12c4428..1ec3f28 100644
 --- a/data/meson.build
 +++ b/data/meson.build
-@@ -41,6 +41,13 @@ configure_file(
-   install_dir: schemadir
+@@ -54,6 +54,13 @@ locally_compiled_schemas_dep = declare_dependency(
+   sources: locally_compiled_schemas
  )
  
 +configure_file(
@@ -2914,10 +2914,10 @@ index 87ccff5..72ac1db 100644
  out:
    set_unredirected_window (compositor_x11, window_to_unredirect);
 diff --git a/src/core/window.c b/src/core/window.c
-index 47c29d9..d7be013 100644
+index d0126b1..71f0220 100644
 --- a/src/core/window.c
 +++ b/src/core/window.c
-@@ -230,6 +230,7 @@ enum
+@@ -232,6 +232,7 @@ enum
    UNMANAGED,
    SIZE_CHANGED,
    POSITION_CHANGED,
@@ -2925,7 +2925,7 @@ index 47c29d9..d7be013 100644
    SHOWN,
    HIGHEST_SCALE_MONITOR_CHANGED,
  
-@@ -661,6 +662,21 @@ meta_window_class_init (MetaWindowClass *klass)
+@@ -663,6 +664,21 @@ meta_window_class_init (MetaWindowClass *klass)
                    NULL, NULL, NULL,
                    G_TYPE_NONE, 0);
  
@@ -2947,7 +2947,7 @@ index 47c29d9..d7be013 100644
    /**
     * MetaWindow::shown:
     * @window: a #MetaWindow
-@@ -944,6 +960,9 @@ meta_window_main_monitor_changed (MetaWindow               *window,
+@@ -946,6 +962,9 @@ meta_window_main_monitor_changed (MetaWindow               *window,
  {
    META_WINDOW_GET_CLASS (window)->main_monitor_changed (window, old);
  
@@ -2979,3 +2979,4 @@ index f927516..76c07be 100644
  }
  
  static gboolean
+
