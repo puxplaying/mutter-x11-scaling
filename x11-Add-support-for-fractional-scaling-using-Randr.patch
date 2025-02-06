@@ -38,7 +38,7 @@ Forwarded: No, forwarding is not planned as there's no upstream interest
  create mode 100644 data/org.gnome.mutter.x11.gschema.xml.in
 
 diff --git a/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml b/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml
-index cf9db4f..7862559 100644
+index 3c28814..cc68359 100644
 --- a/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml
 +++ b/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml
 @@ -449,6 +449,11 @@
@@ -566,7 +566,7 @@ index f1b1a56..fbdb24a 100644
          return FALSE;
  
 diff --git a/src/backends/meta-monitor-manager-dummy.c b/src/backends/meta-monitor-manager-dummy.c
-index 45ba024..92549f8 100644
+index f96f261..f332d69 100644
 --- a/src/backends/meta-monitor-manager-dummy.c
 +++ b/src/backends/meta-monitor-manager-dummy.c
 @@ -372,6 +372,15 @@ append_tiled_monitor (MetaMonitorManager *manager,
@@ -2816,10 +2816,10 @@ index f2d25bd..72f0237 100644
 +
 +uint32_t meta_monitor_manager_xrandr_get_config_timestamp (MetaMonitorManagerXrandr *manager);
 diff --git a/src/backends/x11/meta-output-xrandr.c b/src/backends/x11/meta-output-xrandr.c
-index d9f7216..48ac49d 100644
+index 55f32ae..98be241 100644
 --- a/src/backends/x11/meta-output-xrandr.c
 +++ b/src/backends/x11/meta-output-xrandr.c
-@@ -983,7 +983,8 @@ meta_output_xrandr_new (MetaGpuXrandr *gpu_xrandr,
+@@ -1007,7 +1007,8 @@ meta_output_xrandr_new (MetaGpuXrandr *gpu_xrandr,
        output_info->height_mm = xrandr_output->mm_height;
      }
  
@@ -2985,7 +2985,7 @@ index ea06c85..69702d3 100644
  out:
    set_unredirected_window (compositor_x11, window_to_unredirect);
 diff --git a/src/core/window.c b/src/core/window.c
-index b5193e0..58f71d4 100644
+index 5af3913..93c2942 100644
 --- a/src/core/window.c
 +++ b/src/core/window.c
 @@ -239,6 +239,7 @@ enum
@@ -3029,7 +3029,7 @@ index b5193e0..58f71d4 100644
      g_signal_emit_by_name (window->display, "window-left-monitor",
                             old->number, window);
 diff --git a/src/wayland/meta-xwayland.c b/src/wayland/meta-xwayland.c
-index 994536e..4a0fe4f 100644
+index e405161..cf5cebc 100644
 --- a/src/wayland/meta-xwayland.c
 +++ b/src/wayland/meta-xwayland.c
 @@ -1349,6 +1349,9 @@ meta_xwayland_get_effective_scale (MetaXWaylandManager *manager)
@@ -3042,7 +3042,7 @@ index 994536e..4a0fe4f 100644
      case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
        if (meta_settings_is_experimental_feature_enabled (settings,
                                                           META_EXPERIMENTAL_FEATURE_XWAYLAND_NATIVE_SCALING) &&
-@@ -1376,6 +1379,8 @@ meta_xwayland_get_x11_ui_scaling_factor (MetaXWaylandManager *manager)
+@@ -1457,6 +1460,8 @@ meta_xwayland_get_x11_ui_scaling_factor (MetaXWaylandManager *manager)
        return meta_settings_get_ui_scaling_factor (settings);
      case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
        return meta_xwayland_get_effective_scale (manager);
