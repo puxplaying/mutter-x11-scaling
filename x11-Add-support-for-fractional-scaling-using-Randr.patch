@@ -20,7 +20,7 @@ Forwarded: No, forwarding is not planned as there's no upstream interest
  src/backends/meta-monitor-config-utils.c           |  11 +
  src/backends/meta-monitor-manager-dummy.c          |  17 +-
  src/backends/meta-monitor-manager-private.h        |  22 +-
- src/backends/meta-monitor-manager.c                | 389 +++++++++++++++-
+ src/backends/meta-monitor-manager.c                | 388 +++++++++++++++-
  src/backends/meta-settings-private.h               |  13 +
  src/backends/meta-settings.c                       | 149 +++++-
  src/backends/native/meta-monitor-manager-native.c  |   3 +-
@@ -38,7 +38,7 @@ Forwarded: No, forwarding is not planned as there's no upstream interest
  src/tests/gdctl/show-verbose                       |   3 +-
  src/wayland/meta-xwayland.c                        |   5 +
  tools/gdctl                                        |   2 +
- 30 files changed, 1590 insertions(+), 114 deletions(-)
+ 30 files changed, 1589 insertions(+), 114 deletions(-)
  create mode 100644 data/org.gnome.mutter.x11.gschema.xml.in
 
 diff --git a/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml b/data/dbus-interfaces/org.gnome.Mutter.DisplayConfig.xml
@@ -201,7 +201,7 @@ index 2a6741d..bab050a 100644
  void meta_crtc_unset_config (MetaCrtc *crtc);
  
 diff --git a/src/backends/meta-monitor-config-manager.c b/src/backends/meta-monitor-config-manager.c
-index 5228b73..24d94cd 100644
+index c8a2ca4..0193134 100644
 --- a/src/backends/meta-monitor-config-manager.c
 +++ b/src/backends/meta-monitor-config-manager.c
 @@ -212,6 +212,18 @@ assign_monitor_crtc (MetaMonitor         *monitor,
@@ -309,7 +309,7 @@ index 5228b73..24d94cd 100644
                                 width, height, &width, &height);
  
    monitor_config = create_monitor_config (monitor, mode, color_mode);
-@@ -985,6 +1033,7 @@ create_monitors_config (MetaMonitorConfigManager *config_manager,
+@@ -990,6 +1038,7 @@ create_monitors_config (MetaMonitorConfigManager *config_manager,
    MetaMonitor *primary_monitor;
    MetaLogicalMonitorLayoutMode layout_mode;
    float scale;
@@ -317,7 +317,7 @@ index 5228b73..24d94cd 100644
    GList *l;
    int x, y;
  
-@@ -1004,6 +1053,10 @@ create_monitors_config (MetaMonitorConfigManager *config_manager,
+@@ -1009,6 +1058,10 @@ create_monitors_config (MetaMonitorConfigManager *config_manager,
     */
    monitors = g_list_prepend (monitors, primary_monitor);
  
@@ -328,7 +328,7 @@ index 5228b73..24d94cd 100644
    for (l = monitors; l; l = l->next)
      {
        MetaMonitor *monitor = l->data;
-@@ -1032,6 +1085,7 @@ create_monitors_config (MetaMonitorConfigManager *config_manager,
+@@ -1037,6 +1090,7 @@ create_monitors_config (MetaMonitorConfigManager *config_manager,
          create_preferred_logical_monitor_config (monitor_manager,
                                                   monitor,
                                                   x, y, scale,
@@ -336,7 +336,7 @@ index 5228b73..24d94cd 100644
                                                   color_mode,
                                                   layout_mode);
        logical_monitor_config->is_primary = (monitor == primary_monitor);
-@@ -1226,6 +1280,39 @@ meta_monitor_config_manager_create_for_rotate_monitor (MetaMonitorConfigManager
+@@ -1231,6 +1285,39 @@ meta_monitor_config_manager_create_for_rotate_monitor (MetaMonitorConfigManager
                                                MTK_MONITOR_TRANSFORM_NORMAL);
  }
  
@@ -376,7 +376,7 @@ index 5228b73..24d94cd 100644
  static MetaMonitorsConfig *
  create_monitors_switch_config (MetaMonitorConfigManager    *config_manager,
                                 MonitorMatchRule             match_rule,
-@@ -1256,6 +1343,7 @@ create_for_switch_config_all_mirror (MetaMonitorConfigManager *config_manager)
+@@ -1261,6 +1348,7 @@ create_for_switch_config_all_mirror (MetaMonitorConfigManager *config_manager)
    GList *monitor_configs = NULL;
    gint common_mode_w = 0, common_mode_h = 0;
    float best_scale = 1.0;
@@ -384,7 +384,7 @@ index 5228b73..24d94cd 100644
    MetaMonitor *monitor;
    GList *modes;
    GList *monitors;
-@@ -1357,7 +1445,11 @@ create_for_switch_config_all_mirror (MetaMonitorConfigManager *config_manager)
+@@ -1362,7 +1450,11 @@ create_for_switch_config_all_mirror (MetaMonitorConfigManager *config_manager)
                                                 color_mode));
      }
  
@@ -397,7 +397,7 @@ index 5228b73..24d94cd 100644
                                 common_mode_w, common_mode_h,
                                 &width, &height);
  
-@@ -1849,6 +1941,7 @@ gboolean
+@@ -1854,6 +1946,7 @@ gboolean
  meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor_config,
                                      MetaLogicalMonitorLayoutMode layout_mode,
                                      MetaMonitorManager          *monitor_manager,
@@ -405,7 +405,7 @@ index 5228b73..24d94cd 100644
                                      GError                     **error)
  {
    GList *l;
-@@ -1905,6 +1998,10 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor
+@@ -1910,6 +2003,10 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor
  
    switch (layout_mode)
      {
@@ -534,10 +534,10 @@ index 8b86297..68a1749 100644
            break;
          case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
 diff --git a/src/backends/meta-monitor-config-utils.c b/src/backends/meta-monitor-config-utils.c
-index f1b1a56..fbdb24a 100644
+index c9c0b7e..067398c 100644
 --- a/src/backends/meta-monitor-config-utils.c
 +++ b/src/backends/meta-monitor-config-utils.c
-@@ -155,6 +155,7 @@ meta_verify_logical_monitor_config_list (GList                         *logical_
+@@ -185,6 +185,7 @@ meta_verify_logical_monitor_config_list (GList                         *logical_
    GList *region;
    GList *l;
    gboolean global_scale_required;
@@ -545,7 +545,7 @@ index f1b1a56..fbdb24a 100644
  
    if (!logical_monitor_configs)
      {
-@@ -172,6 +173,15 @@ meta_verify_logical_monitor_config_list (GList                         *logical_
+@@ -202,6 +203,15 @@ meta_verify_logical_monitor_config_list (GList                         *logical_
    region = NULL;
    has_primary = FALSE;
  
@@ -561,7 +561,7 @@ index f1b1a56..fbdb24a 100644
    for (l = logical_monitor_configs; l; l = l->next)
      {
        MetaLogicalMonitorConfig *logical_monitor_config = l->data;
-@@ -179,6 +189,7 @@ meta_verify_logical_monitor_config_list (GList                         *logical_
+@@ -209,6 +219,7 @@ meta_verify_logical_monitor_config_list (GList                         *logical_
        if (!meta_verify_logical_monitor_config (logical_monitor_config,
                                                 layout_mode,
                                                 monitor_manager,
@@ -708,10 +708,10 @@ index 1f129f6..7a811b2 100644
                     meta_monitor_manager_get_capabilities (MetaMonitorManager *manager);
  
 diff --git a/src/backends/meta-monitor-manager.c b/src/backends/meta-monitor-manager.c
-index e6eac7a..fa1ffa4 100644
+index 7a58adb..37102fb 100644
 --- a/src/backends/meta-monitor-manager.c
 +++ b/src/backends/meta-monitor-manager.c
-@@ -134,6 +134,15 @@ static gboolean
+@@ -137,6 +137,15 @@ static gboolean
  meta_monitor_manager_is_config_complete (MetaMonitorManager *manager,
                                           MetaMonitorsConfig *config);
  
@@ -727,7 +727,7 @@ index e6eac7a..fa1ffa4 100644
  static void
  meta_monitor_manager_real_read_current_state (MetaMonitorManager *manager);
  
-@@ -230,6 +239,30 @@ meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
+@@ -233,6 +242,30 @@ meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
                                                      primary_logical_monitor);
  }
  
@@ -758,7 +758,7 @@ index e6eac7a..fa1ffa4 100644
  static float
  derive_configured_global_scale (MetaMonitorManager *manager,
                                  MetaMonitorsConfig *config)
-@@ -341,6 +374,51 @@ derive_scale_from_config (MetaMonitorManager *manager,
+@@ -344,6 +377,51 @@ derive_scale_from_config (MetaMonitorManager *manager,
    return 1.0;
  }
  
@@ -810,7 +810,7 @@ index e6eac7a..fa1ffa4 100644
  static void
  meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manager,
                                                         MetaMonitorsConfig *config)
-@@ -388,11 +466,17 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manag
+@@ -391,11 +469,17 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manag
            float scale;
  
            if (use_global_scale)
@@ -832,7 +832,7 @@ index e6eac7a..fa1ffa4 100644
  
            g_assert (scale > 0);
  
-@@ -514,13 +598,19 @@ meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager
+@@ -517,13 +601,19 @@ meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager
                                                     MetaMonitor                  *monitor,
                                                     MetaMonitorMode              *monitor_mode)
  {
@@ -856,7 +856,7 @@ index e6eac7a..fa1ffa4 100644
  }
  
  float *
-@@ -689,7 +779,8 @@ static gboolean
+@@ -692,7 +782,8 @@ static gboolean
  should_use_stored_config (MetaMonitorManager *manager)
  {
    return (manager->in_init ||
@@ -865,8 +865,8 @@ index e6eac7a..fa1ffa4 100644
 +           !meta_monitor_manager_has_hotplug_mode_update (manager)));
  }
  
- MetaMonitorsConfig *
-@@ -701,6 +792,8 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
+ static gboolean
+@@ -780,6 +871,8 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
    MetaMonitorsConfigMethod method;
    MetaMonitorsConfigMethod fallback_method =
      META_MONITORS_CONFIG_METHOD_TEMPORARY;
@@ -875,7 +875,7 @@ index e6eac7a..fa1ffa4 100644
  
    use_stored_config = should_use_stored_config (manager);
    if (use_stored_config)
-@@ -710,7 +803,18 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
+@@ -789,7 +882,18 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
  
    if (use_stored_config)
      {
@@ -894,9 +894,9 @@ index e6eac7a..fa1ffa4 100644
        if (config)
          {
            g_autoptr (MetaMonitorsConfig) oriented_config = NULL;
-@@ -811,6 +915,16 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
- 
-       config = g_object_ref (config);
+@@ -897,6 +1001,15 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
+             config = oriented_config;
+         }
  
 +      if (config && config->layout_mode != layout_mode)
 +        {
@@ -904,14 +904,13 @@ index e6eac7a..fa1ffa4 100644
 +            meta_monitor_config_manager_create_for_layout (manager->config_manager,
 +                                                           config,
 +                                                           layout_mode);
-+          g_object_unref (config);
 +          config = new_config;
 +        }
 +
        if (meta_monitor_manager_is_config_complete (manager, config))
          {
-           if (!meta_monitor_manager_apply_monitors_config (manager,
-@@ -1001,6 +1115,66 @@ orientation_changed (MetaOrientationManager *orientation_manager,
+           if (is_monitors_config_amend_needed (manager, config))
+@@ -1098,6 +1211,66 @@ orientation_changed (MetaOrientationManager *orientation_manager,
    handle_orientation_change (orientation_manager, manager);
  }
  
@@ -978,7 +977,7 @@ index e6eac7a..fa1ffa4 100644
  static void
  experimental_features_changed (MetaSettings           *settings,
                                 MetaExperimentalFeature old_experimental_features,
-@@ -1008,6 +1182,8 @@ experimental_features_changed (MetaSettings           *settings,
+@@ -1105,6 +1278,8 @@ experimental_features_changed (MetaSettings           *settings,
  {
    gboolean was_stage_views_scaled;
    gboolean is_stage_views_scaled;
@@ -987,7 +986,7 @@ index e6eac7a..fa1ffa4 100644
    gboolean should_reconfigure = FALSE;
  
    was_stage_views_scaled =
-@@ -1017,10 +1193,23 @@ experimental_features_changed (MetaSettings           *settings,
+@@ -1114,10 +1289,23 @@ experimental_features_changed (MetaSettings           *settings,
      meta_settings_is_experimental_feature_enabled (
        settings,
        META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
@@ -1011,7 +1010,7 @@ index e6eac7a..fa1ffa4 100644
    if (should_reconfigure)
      meta_monitor_manager_reconfigure (manager);
  
-@@ -1378,6 +1567,12 @@ meta_monitor_manager_constructed (GObject *object)
+@@ -1475,6 +1663,12 @@ meta_monitor_manager_constructed (GObject *object)
                             G_CALLBACK (experimental_features_changed),
                             manager, G_CONNECT_DEFAULT);
  
@@ -1024,7 +1023,7 @@ index e6eac7a..fa1ffa4 100644
    g_signal_connect_object (settings,
                             "privacy-screen-changed",
                             G_CALLBACK (apply_privacy_screen_settings),
-@@ -1983,6 +2178,33 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
+@@ -2080,6 +2274,33 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
    return G_DBUS_METHOD_INVOCATION_HANDLED;
  }
  
@@ -1058,7 +1057,7 @@ index e6eac7a..fa1ffa4 100644
  static void
  restore_previous_config (MetaMonitorManager *manager)
  {
-@@ -2008,6 +2230,8 @@ restore_previous_config (MetaMonitorManager *manager)
+@@ -2105,6 +2326,8 @@ restore_previous_config (MetaMonitorManager *manager)
              g_set_object (&previous_config, oriented_config);
          }
  
@@ -1067,7 +1066,7 @@ index e6eac7a..fa1ffa4 100644
        method = META_MONITORS_CONFIG_METHOD_TEMPORARY;
        if (meta_monitor_manager_apply_monitors_config (manager,
                                                        previous_config,
-@@ -2059,6 +2283,41 @@ request_persistent_confirmation (MetaMonitorManager *manager)
+@@ -2156,6 +2379,41 @@ request_persistent_confirmation (MetaMonitorManager *manager)
    g_signal_emit (manager, signals[CONFIRM_DISPLAY_CHANGE], 0);
  }
  
@@ -1109,7 +1108,7 @@ index e6eac7a..fa1ffa4 100644
  #define META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED (1 << 0)
  #define META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT (1 << 1)
  
-@@ -2101,6 +2360,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
+@@ -2198,6 +2456,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
    int i;
    MetaMonitorManagerCapability capabilities;
    int max_screen_width, max_screen_height;
@@ -1117,7 +1116,7 @@ index e6eac7a..fa1ffa4 100644
  
    g_variant_builder_init (&monitors_builder,
                            G_VARIANT_TYPE (MONITORS_FORMAT));
-@@ -2299,6 +2559,16 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
+@@ -2396,6 +2655,16 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
      }
  
    g_variant_builder_init (&properties_builder, G_VARIANT_TYPE ("a{sv}"));
@@ -1134,7 +1133,7 @@ index e6eac7a..fa1ffa4 100644
    capabilities = meta_monitor_manager_get_capabilities (manager);
  
    g_variant_builder_add (&properties_builder, "{sv}",
-@@ -2317,6 +2587,14 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
+@@ -2414,6 +2683,14 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                               "global-scale-required",
                               g_variant_new_boolean (TRUE));
      }
@@ -1149,7 +1148,7 @@ index e6eac7a..fa1ffa4 100644
  
    if (meta_monitor_manager_get_max_screen_size (manager,
                                                  &max_screen_width,
-@@ -2356,12 +2634,14 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
+@@ -2453,12 +2730,14 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
  #undef LOGICAL_MONITOR_FORMAT
  #undef LOGICAL_MONITORS_FORMAT
  
@@ -1170,7 +1169,7 @@ index e6eac7a..fa1ffa4 100644
  {
    g_autofree float *supported_scales = NULL;
    int n_supported_scales;
-@@ -2375,13 +2655,34 @@ meta_monitor_manager_is_scale_supported (MetaMonitorManager          *manager,
+@@ -2472,13 +2751,34 @@ meta_monitor_manager_is_scale_supported (MetaMonitorManager          *manager,
                                                       &n_supported_scales);
    for (i = 0; i < n_supported_scales; i++)
      {
@@ -1207,7 +1206,7 @@ index e6eac7a..fa1ffa4 100644
  static gboolean
  is_global_scale_matching_in_config (MetaMonitorsConfig *config,
                                      float               scale)
-@@ -2692,6 +2993,10 @@ derive_logical_monitor_size (MetaMonitorConfig             *monitor_config,
+@@ -2792,6 +3092,10 @@ derive_logical_monitor_size (MetaMonitorConfig             *monitor_config,
        width = (int) roundf (width / scale);
        height = (int) roundf (height / scale);
        break;
@@ -1218,7 +1217,7 @@ index e6eac7a..fa1ffa4 100644
      case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
        break;
      }
-@@ -2788,9 +3093,11 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
+@@ -2888,9 +3192,11 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
      .monitor_configs = monitor_configs
    };
  
@@ -1231,7 +1230,7 @@ index e6eac7a..fa1ffa4 100644
                                             error))
      {
        meta_logical_monitor_config_free (logical_monitor_config);
-@@ -2811,6 +3118,7 @@ is_valid_layout_mode (MetaLogicalMonitorLayoutMode layout_mode)
+@@ -2911,6 +3217,7 @@ is_valid_layout_mode (MetaLogicalMonitorLayoutMode layout_mode)
      {
      case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
      case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
@@ -1239,7 +1238,7 @@ index e6eac7a..fa1ffa4 100644
        return TRUE;
      }
  
-@@ -2905,6 +3213,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
+@@ -3005,6 +3312,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
    GList *disabled_monitor_specs = NULL;
    GList *for_lease_monitor_specs = NULL;
    GError *error = NULL;
@@ -1247,7 +1246,7 @@ index e6eac7a..fa1ffa4 100644
  
    if (serial != manager->serial)
      {
-@@ -2988,10 +3297,42 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
+@@ -3088,10 +3396,42 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
            return G_DBUS_METHOD_INVOCATION_HANDLED;
          }
  
@@ -1290,7 +1289,7 @@ index e6eac7a..fa1ffa4 100644
    disabled_monitor_specs =
      create_disabled_monitor_specs_for_config (manager,
                                                logical_monitor_configs);
-@@ -3877,6 +4218,10 @@ rebuild_monitors (MetaMonitorManager *manager)
+@@ -3977,6 +4317,10 @@ rebuild_monitors (MetaMonitorManager *manager)
  {
    GList *gpus;
    GList *l;
@@ -1301,7 +1300,7 @@ index e6eac7a..fa1ffa4 100644
  
    if (manager->monitors)
      {
-@@ -3895,7 +4240,7 @@ rebuild_monitors (MetaMonitorManager *manager)
+@@ -3995,7 +4339,7 @@ rebuild_monitors (MetaMonitorManager *manager)
            MetaOutput *output = k->data;
            const MetaOutputInfo *output_info = meta_output_get_info (output);
  
@@ -1310,7 +1309,7 @@ index e6eac7a..fa1ffa4 100644
              {
                if (is_main_tiled_monitor_output (output))
                  {
-@@ -4201,7 +4546,7 @@ meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager,
+@@ -4301,7 +4645,7 @@ meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager,
    else
      manager->current_switch_config = META_MONITOR_SWITCH_CONFIG_UNKNOWN;
  
@@ -1319,7 +1318,7 @@ index e6eac7a..fa1ffa4 100644
  
    meta_monitor_manager_rebuild_logical_monitors_derived (manager, config);
  }
-@@ -4210,10 +4555,14 @@ void
+@@ -4310,10 +4654,14 @@ void
  meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager,
                                        MetaMonitorsConfig *config)
  {
