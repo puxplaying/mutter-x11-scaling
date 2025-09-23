@@ -1,3 +1,7 @@
+### So Long, and Thanks for All the Fish!
+### This project will be archived since Ubuntu has [dropped support](https://salsa.debian.org/gnome-team/mutter/-/commit/6d1dce1a5fc4b3c2520cb40765cf47fb3eea4fe0) for Xorg specific patches.
+
+---
 # mutter-x11-scaling
 Mutter build with Ubuntu patch for Xorg fractional scaling on Manjaro / Arch Linux.
 
